@@ -10,9 +10,9 @@ const config = {
   },
   searchPath: ['knex', 'public'],
 }
-const conn = require('knex')(config)
+const db = require('knex')(config)
 
 module.exports = {
-  conn,
+  db,
   config
 }
