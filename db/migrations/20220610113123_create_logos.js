@@ -3,8 +3,10 @@ exports.up = async function (knex) {
   const exist = await knex.schema.hasTable(tableName)
   if (!exist) {
     return knex.schema.createTable(tableName, function (table) {
-      table.string('key').primary().notNullable()
+      table.string('key').notNullable()
+      table.string('name').notNullable()
       table.string('url').notNullable()
+      table.string('validateUrl')
       table.string('customer')
       table.datetime('created_at').notNullable().defaultTo(knex.fn.now())
       table.datetime('updated_at')

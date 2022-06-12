@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+
+#root {
+  height: 100vh;
+}
+
+body {
+  font-family: "Poppins", "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+}
+
+.content {
+  background-image: url(/top-bg.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
