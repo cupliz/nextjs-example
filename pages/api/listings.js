@@ -2,9 +2,13 @@
 import { db } from '../../db/knex'
 export default async function handler(req, res) {
   try {
-    const listings = await db('listings').where(req.query)
-    // db.destroy()
-    res.status(200).json(listings)
+    console.log(req.query)
+    if (Object.keys(req.query).length) {
+      const result = await db('listings').where(req.query)
+      res.status(200).json(result)
+    } else {
+      res.status(200).json([])
+    }
   } catch (error) {
     res.status(500).json(error)
   }

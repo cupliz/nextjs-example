@@ -13,9 +13,9 @@ export default function Landing() {
   const { data: logos } = api.useGetLogosQuery()
   const { data: listings } = api.useGetListingsQuery(url)
   const data = useMemo(() => {
-    return listings ? listings[0] : {}
+    return listings?.length ? listings[0] : null
   }, [listings])
-  return listings?.length ? (
+  return data ? (
     <div className="h-screen bg-no-repeat bg-cover flex items-center justify-center" style={{ backgroundImage: `url("${data?.background}")` }}>
       <div className='flex space-x-5 space-x-5'>
         {data?.links.length && JSON.parse(data.links).map((link, j) => {
@@ -28,11 +28,6 @@ export default function Landing() {
           </a>
         })}
       </div>
-      {/* <div className='bg-blue-500 h-50'>
-        {data?.links.length ? data.links.map((x, i) => {
-          return <div key={i}>{ }</div>
-        }) : null}
-      </div> */}
     </div>
-  ) : <div>Loading...</div>
+  ) : <div className='h-screen flex items-center justify-center'>Loading...</div>
 }

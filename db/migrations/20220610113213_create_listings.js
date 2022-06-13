@@ -4,7 +4,7 @@ exports.up = async function (knex) {
   if (!exist) {
     return knex.schema.createTable(tableName, function (table) {
       table.increments('id').primary().notNullable()
-      table.string('customer').notNullable()
+      table.string('user').notNullable()
       table.string('background')
       table.string('name')
       table.string('title')

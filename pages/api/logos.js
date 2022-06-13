@@ -2,9 +2,9 @@
 import { db } from '../../db/knex'
 export default async function handler(req, res) {
   try {
-    const get = await db('logos')
+    const result = await db('logos')
     // db.destroy()
-    res.status(200).json(get)
+    res.status(200).json(result)
   } catch (error) {
     res.status(500).json(error)
   }

@@ -16,18 +16,10 @@ const api = createApi({
   reducerPath: "api",
   tagTypes: [],
   endpoints: build => ({
-    authenticate: build.mutation({
-      query: ({ mode, ...body }) => ({
-        url: mode === "manual" ? `/auth/login` : "/auth/autologin",
-        method: "POST",
-        body
-      }),
-
-      invalidatesTags: result => [{ type: "Vendor", id: result.vendorId }]
-    }),
     getLogos: build.query({
       query: () => `/logos`,
     }),
+
     getListings: build.query({
       query: (params) => ({
         url: `/listings${params || ''}`,
@@ -45,6 +37,17 @@ const api = createApi({
       query: ({ id }) => ({
         url: `/listings/${id}`,
         method: "DELETE"
+      }),
+    }),
+
+    getPayments: build.query({
+      query: (params) => `/payments${params || ''}`,
+    }),
+    createPayment: build.mutation({
+      query: (body) => ({
+        url: `/payments`,
+        method: "POST",
+        body
       }),
     }),
   })

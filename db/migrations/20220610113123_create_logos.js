@@ -7,7 +7,7 @@ exports.up = async function (knex) {
       table.string('name').notNullable()
       table.string('url').notNullable()
       table.string('validateUrl')
-      table.string('customer')
+      table.string('user')
       table.datetime('created_at').notNullable().defaultTo(knex.fn.now())
       table.datetime('updated_at')
     })

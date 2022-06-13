@@ -1,16 +1,13 @@
-const tableName = 'users'
+const tableName = 'payments'
 exports.up = async function (knex) {
   const exist = await knex.schema.hasTable(tableName)
   if (!exist) {
     return knex.schema.createTable(tableName, function (table) {
-      table.string('uid').primary().notNullable()
-      table.string('fullname').notNullable()
-      table.string('email').notNullable()
-      table.string('phone').notNullable()
+      table.increments('id').primary().notNullable()
+      table.string('user').notNullable()
       table.string('stripe')
-      table.boolean('subscribe').notNullable().defaultTo(false)
+      table.float('total')
       table.datetime('created_at').notNullable().defaultTo(knex.fn.now())
-      table.datetime('updated_at')
     })
   }
 }
