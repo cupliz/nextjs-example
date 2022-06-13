@@ -14,7 +14,9 @@
     "seed:run": "knex seed:run"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.2",
     "autoprefixer": "^10.4.7",
+    "axios": "^0.27.2",
     "cors": "^2.8.5",
     "dayjs": "^1.11.3",
     "dotenv": "^16.0.1",

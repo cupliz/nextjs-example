@@ -2,10 +2,9 @@
 import { db } from '../../db/knex'
 export default async function handler(req, res) {
   try {
-    console.log('connection to listings')
-    const get = await db('listings')
+    const listings = await db('listings').where(req.query)
     // db.destroy()
-    res.status(200).json(get)
+    res.status(200).json(listings)
   } catch (error) {
     res.status(500).json(error)
   }
