@@ -2,7 +2,6 @@
 import { db } from '../../db/knex'
 export default async function handler(req, res) {
   try {
-    console.log('connection to logos')
     const get = await db('logos')
     // db.destroy()
     res.status(200).json(get)

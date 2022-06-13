@@ -1,11 +1,35 @@
 // import styles from '../styles/Home.module.css'
-import Link from "next/link";
 import { IoLogoFacebook, IoLogoGoogle } from "react-icons/io5";
+import * as firebaseAuth from 'firebase/auth'
 import Layout from "../components/layout";
+import api from "../services/api";
+import { handleError } from "../utils/helper";
 
 export default function Home() {
-  const loginGoogle = () => {
-    console.log('login google')
+  const loginGoogle = async () => {
+    try {
+      const auth = firebaseAuth.getAuth()
+      const provider = new firebaseAuth.GoogleAuthProvider()
+      const result = await firebaseAuth.signInWithPopup(auth, provider)
+      console.log(auth, result)
+      // const { data } = await axios.get(`/user/${result.user.uid}`)
+      // if (!data.length) {
+      //   // const [first_name, last_name] = result.user.displayName?.split(' ')
+      //   // const payload = {
+      //   //   uid: result.user.uid,
+      //   //   email: result.user.email,
+      //   //   first_name,
+      //   //   last_name,
+      //   //   token: result.user.accessToken,
+      //   //   photo: result.user.photoURL
+      //   // }
+      //   // await axios.post(`/users`, payload)
+      //   // toast.success(`Registration completed!`)
+      // }
+      // return result.user
+    } catch (error) {
+      return handleError(error)
+    }
   }
   const loginFacebook = () => {
     console.log('login facebook')

@@ -1,3 +1,10 @@
+import { toast } from "react-toastify";
+
+export const handleError = (error) => {
+  toast.error(error.code?.split('/')[1].replace(/-/g, ' ') || error.message)
+  return error
+}
+
 export const friendlyUrl = (url) => {
   return url.toString()               // Convert to string
     .normalize('NFD')               // Change diacritics

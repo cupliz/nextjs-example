@@ -8,7 +8,6 @@ import { friendlyUrl } from '../../utils/helper'
 export default function Management() {
   const { data: logos } = api.useGetLogosQuery()
   const { data: listings } = api.useGetListingsQuery()
-
   return (
     <Layout className="admin-bg">
       <div className="container mx-auto p-5 grid grid-cols-1 md:grid-cols-4 md:gap-5">
