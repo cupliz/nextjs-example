@@ -1,11 +1,14 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { db } from '../../db/knex'
-export default async function handler(req, res) {
+import connectionHandler from '../../db/knex2';
+const handler = async (req, res) => {
   try {
-    const result = await db('logos')
-    // db.destroy()
-    res.status(200).json(result)
+    if (req.method === 'GET') {
+      const data = await req.db('logos')
+      return res.status(200).json(data)
+    }
+
+    return res.status(404).end();
   } catch (error) {
-    res.status(500).json(error)
+    return res.status(500).json(error);
   }
-}
+};
+export default connectionHandler()(handler);

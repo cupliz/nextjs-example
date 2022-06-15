@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import { IoLogoFacebook, IoLogoGoogle } from "react-icons/io5";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { getAuth, FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import Layout from "../components/layout";
 // import api from "../services/api";
 import { handleError } from "../utils/helper";
@@ -20,8 +20,16 @@ export default function Home() {
       return handleError(error)
     }
   }
-  const loginFacebook = () => {
-    console.log('login facebook')
+  const loginFacebook = async () => {
+    try {
+      const provider = new FacebookAuthProvider()
+      const result = await signInWithPopup(getAuth(), provider)
+      console.log('login facebook', result.user)
+      login(result.user)
+    } catch (error) {
+      console.error(error)
+
+    }
   }
 
   useEffect(() => {

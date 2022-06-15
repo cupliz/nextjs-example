@@ -32,3 +32,9 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.form-checkbox,
+.form-select,
+.form-input {
+  border-radius: 0.5rem;
+}

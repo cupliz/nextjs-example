@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     if (req.method === 'POST') {
       const created = await db(table).insert(req.body, 'id')
       const result = await db(table).where(created[0])
+      // await db.destroy()
       res.status(200).json(result)
     }
   } catch (error) {

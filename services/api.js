@@ -14,7 +14,7 @@ const api = createApi({
     }
   }),
   reducerPath: "api",
-  tagTypes: [],
+  tagTypes: ['listings'],
   endpoints: build => ({
     getLogos: build.query({
       query: () => `/logos`,
@@ -25,19 +25,28 @@ const api = createApi({
         url: `/listings${params || ''}`,
         method: "GET",
       }),
+      providesTags: (result) =>
+        result ? result.map(({ id }) => ({ type: 'listings', id })) : [],
     }),
     editListings: build.mutation({
-      query: ({ id, ...body }) => ({
-        url: `/listings/${id}`,
-        method: "PATCH",
-        body
-      }),
+      query: ({ id, ...body }) => {
+        return {
+          url: `/listings?id=${id}`,
+          method: "PATCH",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body
+        }
+      },
+      invalidatesTags: ['listings'],
     }),
     deleteListings: build.mutation({
       query: ({ id }) => ({
         url: `/listings/${id}`,
         method: "DELETE"
       }),
+      invalidatesTags: ['listings'],
     }),
 
     getPayments: build.query({

@@ -5,7 +5,7 @@ exports.seed = async function (knex) {
   await knex(tableName).insert([
     { key: 'aribnb_square', name: 'AirBNB', url: '/logos/airbnb.png', validateUrl: 'https://www.airbnb.com' },
     { key: 'vrbo_square', name: 'VRBO', url: '/logos/vrbo.png', validateUrl: 'https://www.vrbo.com' },
-    { key: 'expedia_square', name: 'Expedia', url: '/logos/vrbo.png', validateUrl: 'https://www.expedia.com' },
+    { key: 'expedia_square', name: 'Expedia', url: '/logos/expedia.png', validateUrl: 'https://www.expedia.com' },
     
     // { key: 'airbnb_horizontal', name: 'AirBNB', url: '/logos/airbnb-horizontal.png', validateUrl: /https:\/\/airbnb\.com\// },
     // { key: 'aribnb_square', name: 'AirBNB', url: '/logos/airbnb-square.png', validateUrl: /https:\/\/airbnb\.com\// },

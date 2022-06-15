@@ -18,7 +18,9 @@ export const useAuth = () => {
       token: value.accessToken
     }
     dispatch(login(payload))
-    router.push('/admin')
+    if (router.pathname === '/') {
+      router.push('/admin')
+    }
   }
   const setLogout = () => {
     signOut(getAuth())
@@ -29,12 +31,11 @@ export const useAuth = () => {
   }
   return {
     user,
+    auth: getAuth(),
     login: setLogin,
     logout: setLogout,
     authCheck: () => {
-      if (user) {
-        router.push('/admin')
-      } else {
+      if (!user) {
         onAuthStateChanged(getAuth(), (authUser) => {
           if (authUser) {
             setLogin(authUser)
@@ -42,6 +43,10 @@ export const useAuth = () => {
             setLogout()
           }
         });
+      } else {
+        if (router.pathname === '/') {
+          router.push('/admin')
+        }
       }
     }
   };
