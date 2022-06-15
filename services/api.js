@@ -28,6 +28,19 @@ const api = createApi({
       providesTags: (result) =>
         result ? result.map(({ id }) => ({ type: 'listings', id })) : [],
     }),
+    addListings: build.mutation({
+      query: (body) => {
+        return {
+          url: `/listings`,
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body
+        }
+      },
+      invalidatesTags: ['listings'],
+    }),
     editListings: build.mutation({
       query: ({ id, ...body }) => {
         return {
@@ -42,8 +55,8 @@ const api = createApi({
       invalidatesTags: ['listings'],
     }),
     deleteListings: build.mutation({
-      query: ({ id }) => ({
-        url: `/listings/${id}`,
+      query: (id) => ({
+        url: `/listings?id=${id}`,
         method: "DELETE"
       }),
       invalidatesTags: ['listings'],
