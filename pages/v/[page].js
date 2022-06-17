@@ -15,19 +15,23 @@ export default function Landing() {
   const data = useMemo(() => {
     return listings?.length ? listings[0] : null
   }, [listings])
+  const isDark = data?.theme === 'dark'
   return data ? (
     <div className="h-screen bg-no-repeat bg-cover flex items-center justify-center" style={{ backgroundImage: `url("${data?.background}")` }}>
-      <div className='flex space-x-5 space-x-5'>
-        {data?.links.length && JSON.parse(data.links).map((link, j) => {
-          const logo = logos?.find(x => x.key === link.logo)
-          return <a href={link.url} target="_blank" key={j} className="text-center bg-white px-4 py-2 rounded">
-            <div className='w-20 h-20 flex items-center justify-center'>
-              <img className="w-full" src={logo?.url} alt="" />
-            </div>
-            <h1>{logo?.name}</h1>
-          </a>
-        })}
+      <div className={`bg-${isDark ? 'black' : 'white'} bg-opacity-30 p-5 rounded`}>
+        <div className={`text-${isDark ? 'white' : 'black'} mb-5 text-center`}>{data.title}</div>
+        <div className='flex space-x-5 space-x-5'>
+          {data?.links.length && JSON.parse(data.links).map((link, j) => {
+            const logo = logos?.find(x => x.key === link.logo)
+            return <a href={link.url} target="_blank" key={j} className="text-center bg-white px-4 py-2 rounded">
+              <div className='w-20 h-20 flex items-center justify-center'>
+                <img className="w-full" src={logo?.url} alt="" />
+              </div>
+              <h1>{logo?.name}</h1>
+            </a>
+          })}
+        </div>
       </div>
-    </div>
+    </div >
   ) : <div className='h-screen flex items-center justify-center'>Loading...</div>
 }

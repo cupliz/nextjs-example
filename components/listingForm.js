@@ -1,12 +1,13 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { HiOutlineSave } from 'react-icons/hi'
-import api from '../../services/api'
-import { friendlyUrl } from '../../utils/helper'
-import { useAuth } from '../../utils/hooks'
+import { HiOutlineMinusCircle, HiOutlinePlusCircle, HiOutlineSave } from 'react-icons/hi'
+import api from '../services/api'
+import { friendlyUrl } from '../utils/helper'
+import { useAuth } from '../utils/useAuth'
 
-export default function listingForm({ listings, show, onClose, editId }) {
+export default function ListingForm({ listings, show, onClose, editId }) {
   const { user } = useAuth()
+  const [linksData, setLinksData] = useState([])
   const { data: logos } = api.useGetLogosQuery()
   const [editListing] = api.useEditListingsMutation()
   const [addListing] = api.useAddListingsMutation()
@@ -39,8 +40,24 @@ export default function listingForm({ listings, show, onClose, editId }) {
     }
     onClose()
   }
-  const data = editId !== null ? listings[editId] : {}
-  const linksData = data?.links ? JSON.parse(data?.links) : []
+  const addLinks = () => {
+    setLinksData([...linksData, { logo: 'airbnb_square', url: 'https://www.airbnb.com/' }])
+  }
+  const deleteLinks = (index) => {
+    const newLinks = [...linksData]
+    newLinks.splice(index, 1)
+    setLinksData(newLinks)
+  }
+
+  const data = useMemo(() => editId !== null ? listings[editId] : {}, [editId])
+  useEffect(() => {
+    if (editId !== null && listings[editId]?.links) {
+      setLinksData(JSON.parse(listings[editId]?.links))
+    } else {
+      setLinksData([])
+    }
+  }, [editId])
+
   return (
     <Transition appear show={show} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -67,10 +84,10 @@ export default function listingForm({ listings, show, onClose, editId }) {
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <form onSubmit={(e) => handleSubmit(e, data?.id)}>
+              <Dialog.Panel className="w-full max-w-2xl transform overflow-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <form onSubmit={(e) => handleSubmit(e, data?.id)} className="space-y-4">
                   <Dialog.Title className="text-lg font-bold leading-6 mb-4 flex justify-between items-center" >
-                    Edit Listing {data.id}
+                    {editId ? 'Edit' : 'Add'} Listing {data.id}
                     <div className='flex space-x-2 mt-4'>
                       <button type="submit" className='bg-rose-500 px-3 py-1.5 rounded text-white hover:bg-rose-600 flex items-center cursor-pointer'>
                         <HiOutlineSave className='mr-2' /> Save
@@ -89,23 +106,29 @@ export default function listingForm({ listings, show, onClose, editId }) {
                     <input name="title" type="text" className="form-input bg-gray-100 border-none w-full" placeholder="Page heading" defaultValue={data?.title} />
                   </div>
                   <div>
-                    <label htmlFor="links">Links:</label>
+                    <label htmlFor="links" className='flex justify-between'>
+                      Links:
+                      <HiOutlinePlusCircle className='w-6 h-6 text-green-500 cursor-pointer' onClick={addLinks} />
+                    </label>
                     {linksData.map((link, j) => {
-                      return <div key={j} className="mt-4 space-y-2">
-                        <div className='flex'>
-                          <label htmlFor="logo" className='w-1/3'>Logo</label>
-                          <select name={`links.${j}.logo`} id="logo" className='form-select bg-gray-100 border-none w-full' defaultValue={link.logo}>
-                            {logos?.map((x, h) => <option key={h} value={x.key}>{x.name}</option>)}
-                          </select>
+                      return <div key={j} className="mt-4 flex">
+                        <div className='w-full  space-y-2'>
+                          <div className='flex'>
+                            <label htmlFor="logo" className='w-1/3'>Logo</label>
+                            <select name={`links.${j}.logo`} id="logo" className='form-select bg-gray-100 border-none w-full' defaultValue={link.logo}>
+                              {logos?.map((x, h) => <option key={h} value={x.key}>{x.name}</option>)}
+                            </select>
+                          </div>
+                          <div className='flex'>
+                            <label htmlFor="url" className='w-1/3'>Property URL</label>
+                            <textarea name={`links.${j}.url`} id="url" type="text"
+                              placeholder='Property URL'
+                              className='form-input bg-gray-100 border-none w-full'
+                              defaultValue={link.url}
+                            />
+                          </div>
                         </div>
-                        <div className='flex'>
-                          <label htmlFor="url" className='w-1/3'>Property URL</label>
-                          <textarea name={`links.${j}.url`} id="url" type="text"
-                            placeholder='Property URL'
-                            className='form-input bg-gray-100 border-none w-full'
-                            defaultValue={link.url}
-                          />
-                        </div>
+                        <HiOutlineMinusCircle className='w-6 h-6 text-red-500 cursor-pointer' onClick={() => deleteLinks(j)} />
                       </div>
                     })}
                   </div>

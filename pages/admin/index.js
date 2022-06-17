@@ -1,15 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { HiOutlineEye, HiOutlinePencil, HiOutlineSave, HiTrash } from 'react-icons/hi'
+import { HiOutlineEye, HiOutlinePencil, HiOutlinePlus, HiTrash } from 'react-icons/hi'
 import Link from 'next/link'
 import Layout from '../../components/layout'
 import Sidebar from '../../components/sidebar'
-import ListingForm from '../../components/admin/listingForm'
+import ListingForm from '../../components/listingForm'
 import api from '../../services/api'
 import { friendlyUrl } from '../../utils/helper'
-import { useAuth } from '../../utils/hooks'
+import { useAuth } from '../../utils/useAuth'
+import { usePayment } from '../../utils/usePayment'
 
 export default function Management() {
   const { authCheck, user } = useAuth()
+  const { total } = usePayment()
   const [show, setShow] = useState(false)
   const [editId, setEditId] = useState(null)
   const params = useMemo(() => new URLSearchParams({ user: user?.uid }).toString(), [user])
@@ -36,11 +38,26 @@ export default function Management() {
       deleteListing(d.id)
     }
   }
+  const count = useMemo(() => {
+    let listing = 0
+    if (total > 5) {
+      listing = 2
+      listing = listing + (total - 5)
+    }
+    return listing
+  }, [total])
   return (
     <Layout className="admin-bg">
       <div className="container mx-auto p-5 grid grid-cols-1 md:grid-cols-4 md:gap-5">
-        <Sidebar addListing={sideBarAddListing} />
-        <div className="col-span-3 space-y-10">
+        <Sidebar />
+        <div className="col-span-3 space-y-6">
+          <div className='drop-shadow-lg bg-gray-100 rounded p-4 mt-10 md:mt-0 border border-gray-200 flex justify-between items-center'>
+            <h1 className='text-xl font-bold text-gray-500'>Listings <span>({listings?.length}/{count})</span></h1>
+            {listings?.length < count && <button className="bg-blue-500 px-3 py-1.5 rounded text-white hover:bg-blue-600 flex items-center" onClick={sideBarAddListing}>
+              <HiOutlinePlus className="w-6 h-6" />
+              <span className="ml-3">Add Listing</span>
+            </button>}
+          </div>
           {
             listings?.length ? listings.map((listing, i) => {
               const linksData = listing?.links ? JSON.parse(listing?.links) : []
@@ -51,7 +68,7 @@ export default function Management() {
                       <HiOutlineEye className='mr-2' /> Public View
                     </a>
                   </Link>
-                  <div className='flex space-x-2'>
+                  <div className='flex space-x-2 ml-2'>
                     <a className='bg-green-500 px-3 py-1.5 rounded text-white hover:bg-green-600 flex items-center cursor-pointer' onClick={() => onOpen(i)}>
                       <HiOutlinePencil className='mr-2' /> Edit
                     </a>

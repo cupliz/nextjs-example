@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import * as firebase from 'firebase/app'
-import { store } from '../services/store';
+import 'react-toastify/dist/ReactToastify.css';
 import '../styles/globals.css'
+import { store } from '../services/store';
 
 const FIREBASE_PK = process.env.NEXT_PUBLIC_FIREBASE_PK
 const firebaseConfig = JSON.parse(FIREBASE_PK)
@@ -18,6 +20,7 @@ axios.interceptors.response.use(
 
 const MyApp = ({ Component, pageProps }) => {
   return <Provider store={store}>
+    <ToastContainer />
     <Component {...pageProps} />
   </Provider>
 }

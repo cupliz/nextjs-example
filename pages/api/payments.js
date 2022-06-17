@@ -1,17 +1,36 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { db } from '../../db/knex'
+const stripe = require('stripe')(process.env.STRIPE_SK)
+
 export default async function handler(req, res) {
-  const table = 'payments'
   try {
+    const table = 'payments'
     if (req.method === 'GET') {
-      const result = await db(table).where(req.query)
-      res.status(200).json(result)
+      if (req.query.user) {
+        const { data } = await stripe.paymentIntents.search({
+          query: `status:'succeeded' AND metadata['order_id']:'${req.query.user}'`,
+        });
+        res.status(200).json(data)
+      } else {
+        res.status(200).json([])
+      }
     }
     if (req.method === 'POST') {
-      const created = await db(table).insert(req.body, 'id')
-      const result = await db(table).where(created[0])
-      // await db.destroy()
-      res.status(200).json(result)
+      const { amount, user } = req.body
+      if (req.query.type == 'pi') {
+        console.log(amount, user)
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount,
+          currency: "usd",
+          payment_method_types: ['card'],
+          metadata: {
+            order_id: user,
+          },
+        });
+
+        // const result = await req.db(table).insert({}).returning('id')
+        return res.json({ clientSecret: paymentIntent.client_secret });
+      }
+      res.status(500).end()
     }
   } catch (error) {
     res.status(500).json(error)

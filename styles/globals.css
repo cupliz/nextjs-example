@@ -37,4 +37,5 @@ body {
 .form-select,
 .form-input {
   border-radius: 0.5rem;
+  border-color: #3b82f6;
 }

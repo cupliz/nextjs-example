@@ -9,7 +9,7 @@ exports.up = async function (knex) {
       table.string('name')
       table.string('title')
       table.string('description')
-      table.string('theme')
+      table.string('theme').notNullable().defaultTo('dark')
       table.text('links')
       table.string('image')
       table.string('fb')

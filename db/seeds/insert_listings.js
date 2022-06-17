@@ -5,7 +5,7 @@ exports.seed = async function (knex) {
   await knex(tableName).insert([
     {
       user: 'uSbULOoVEBMCPDFkf3WverxxONP2',
-      name: 'iyan-properties',
+      name: 'brianna-nolan',
       background: 'https://a0.muscache.com/im/pictures/miso/Hosting-51228159/original/2d49f125-0e23-4e30-8792-3df2661c1cb5.jpeg',
       title: 'Choose your platform:',
       links: JSON.stringify([

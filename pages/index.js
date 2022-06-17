@@ -1,12 +1,9 @@
 import { useEffect } from "react";
-import { useRouter } from 'next/router'
-import axios from 'axios'
 import { IoLogoFacebook, IoLogoGoogle } from "react-icons/io5";
 import { getAuth, FacebookAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import Layout from "../components/layout";
-// import api from "../services/api";
 import { handleError } from "../utils/helper";
-import { useAuth } from '../utils/hooks'
+import { useAuth } from '../utils/useAuth'
 
 export default function Home() {
   const { authCheck, login } = useAuth()
@@ -28,7 +25,6 @@ export default function Home() {
       login(result.user)
     } catch (error) {
       console.error(error)
-
     }
   }
 

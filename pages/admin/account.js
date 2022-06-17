@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react'
 import { IoLogoFacebook, IoLogoGoogle } from "react-icons/io5";
 import Layout from '../../components/layout';
 import Sidebar from '../../components/sidebar';
-import { useAuth } from '../../utils/hooks';
+import { useAuth } from '../../utils/useAuth';
 
 export default function account() {
   const { authCheck, user, auth } = useAuth()

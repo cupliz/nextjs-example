@@ -14,7 +14,7 @@ const api = createApi({
     }
   }),
   reducerPath: "api",
-  tagTypes: ['listings'],
+  tagTypes: ['logos', 'listings', 'payments'],
   endpoints: build => ({
     getLogos: build.query({
       query: () => `/logos`,
@@ -25,8 +25,9 @@ const api = createApi({
         url: `/listings${params || ''}`,
         method: "GET",
       }),
-      providesTags: (result) =>
-        result ? result.map(({ id }) => ({ type: 'listings', id })) : [],
+      providesTags: ['listings'],
+      // providesTags: (result) =>
+      //   result ? result.map(({ id }) => ({ type: 'listings', id })) : [],
     }),
     addListings: build.mutation({
       query: (body) => {
@@ -63,14 +64,18 @@ const api = createApi({
     }),
 
     getPayments: build.query({
-      query: (params) => `/payments${params || ''}`,
+      query: (uid) => `/payments?user=${uid || ''}`,
+      providesTags: ['payments'],
     }),
     createPayment: build.mutation({
-      query: (body) => ({
-        url: `/payments`,
-        method: "POST",
-        body
-      }),
+      query: ({ type, ...body }) => {
+        return {
+          url: `/payments?type=${type}`,
+          method: "POST",
+          body
+        }
+      },
+      invalidatesTags: ['payments'],
     }),
   })
 });
