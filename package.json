@@ -1,7 +1,11 @@
 {
-  "name": "nextjs",
+  "name": "strbookingportal.com",
   "version": "0.1.0",
   "private": true,
+  "cacheDirectories": [".next/cache"],
+  "engines": {
+    "node": "17.x"
+  },
   "scripts": {
     "start": "next start",
     "dev": "PORT=3001 next dev",
