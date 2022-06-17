@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: strbooking_postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - ./.docker/postgres:/data/db:delegated
