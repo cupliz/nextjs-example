@@ -1,7 +1,7 @@
-import { db } from '../../db/knex'
+import connectionHandler from '../../db/knex2';
 const stripe = require('stripe')(process.env.STRIPE_SK)
 
-export default async function handler(req, res) {
+const handler = async (req, res) => {
   try {
     const table = 'payments'
     if (req.method === 'GET') {
@@ -36,3 +36,5 @@ export default async function handler(req, res) {
     res.status(500).json(error)
   }
 }
+
+export default connectionHandler()(handler);

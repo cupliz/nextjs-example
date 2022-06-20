@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 
 export const handleError = (error) => {
+  console.error(error)
   toast.error(error.code?.split('/')[1].replace(/-/g, ' ') || error.message)
   return error
 }

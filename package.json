@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start": "next start",
-    "dev": "PORT=3001 next dev",
     "build": "next build",
+    "dev": "PORT=3001 next dev",
     "lint": "next lint",
     "db:make": "knex migrate:make",
     "db:migrate": "knex migrate:latest",

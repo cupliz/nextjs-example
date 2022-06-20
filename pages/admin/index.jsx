@@ -63,7 +63,7 @@ export default function Management() {
               const linksData = listing?.links ? JSON.parse(listing?.links) : []
               return <div key={i} className='drop-shadow-lg bg-gray-100 rounded p-4 md:p-5 mt-10 md:mt-0 space-y-5 border border-gray-200'>
                 <div className='flex justify-between'>
-                  <Link href={`/v/${friendlyUrl(listing.name)}`}>
+                  <Link href={`/${friendlyUrl(listing.name)}`}>
                     <a target="_blank" className='bg-blue-500 px-3 py-1.5 rounded text-white hover:bg-blue-600 flex items-center'>
                       <HiOutlineEye className='mr-2' /> Public View
                     </a>

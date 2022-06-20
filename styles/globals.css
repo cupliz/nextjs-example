@@ -39,3 +39,18 @@ body {
   border-radius: 0.5rem;
   border-color: #3b82f6;
 }
+
+.overlay-dark {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  box-shadow: inset 0 0 100vw 15vw #000;
+}
+.overlay-light {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  box-shadow: inset 0 0 100vw 15vw #fff;
+}
