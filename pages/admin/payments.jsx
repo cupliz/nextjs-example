@@ -30,9 +30,13 @@ export default function Payments() {
           <div className="flex justify-between">
             <h1 className="text-xl font-bold text-gray-500">Subscriptions</h1>
             {!!active ? (
-              <HiBadgeCheck className="w-6 h-6 text-green-500" />
+              <div className="flex text-green-500">
+                <HiBadgeCheck className="w-6 h-6 mr-2" /> Active
+              </div>
             ) : (
-              <HiBan className="w-6 h-6 text-red-500" />
+              <div className="flex text-red-500">
+                <HiBan className="w-6 h-6 mr-2" /> Inactive
+              </div>
             )}
           </div>
           {!active && (

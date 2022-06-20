@@ -5,6 +5,7 @@ import {
   HiOutlineUser,
   HiOutlineLogout,
   HiOutlineCollection,
+  HiOutlinePhotograph,
 } from "react-icons/hi";
 import { useAuth } from "../utils/useAuth";
 
@@ -17,7 +18,7 @@ export default function Sidebar() {
     }
   };
   return (
-    <aside className="col-span-1 overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800 h-auto h-60">
+    <aside className="col-span-1 overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800 h-auto h-72">
       <ul className="space-y-2  text-gray-800">
         <li>
           <Link href="/admin">
@@ -40,6 +41,14 @@ export default function Sidebar() {
             <a className="flex items-center p-2 text-base font-normal rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
               <HiOutlineCreditCard className="w-6 h-6" />
               <span className="flex-1 ml-3 whitespace-nowrap">Subscriptions</span>
+            </a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/admin/logos">
+            <a className="flex items-center p-2 text-base font-normal rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <HiOutlinePhotograph className="w-6 h-6" />
+              <span className="flex-1 ml-3 whitespace-nowrap">Logos</span>
             </a>
           </Link>
         </li>

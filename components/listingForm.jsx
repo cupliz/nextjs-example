@@ -50,7 +50,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
       ...formated,
       links: formated.links ? JSON.stringify(formated.links) : "",
     };
-    delete payload.file
+    delete payload.file;
     if (editId !== null) {
       editListing({ ...payload, id });
     } else {
@@ -99,11 +99,14 @@ export default function ListingForm({ listings, show, onClose, editId }) {
             >
               <Dialog.Panel
                 as="form"
-                enctype="multipart/form-data"
+                encType="multipart/form-data"
                 onSubmit={(e) => handleSubmit(e, data?.id)}
                 className="w-full h-full overflow-hidden max-w-2xl rounded-2xl bg-white text-left align-middle shadow-xl transition-all pb-20"
               >
-                <Dialog.Title as="div" className="flex justify-between items-center py-4 px-6">
+                <Dialog.Title
+                  as="div"
+                  className="flex justify-between items-center py-4 px-6"
+                >
                   <h2 className="text-lg font-bold leading-6">
                     {editId !== null ? "Edit" : "Add"} Listing {data.id}
                   </h2>
@@ -172,7 +175,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                     <div>
                       <label htmlFor="ga">Google Analytics:</label>
                       <input
-                        name="title"
+                        name="ga"
                         type="text"
                         className="form-input bg-gray-100 border-none w-full"
                         placeholder="ex: G-xxxxxx"
@@ -182,7 +185,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                     <div>
                       <label htmlFor="fb">Facebook Pixel:</label>
                       <input
-                        name="title"
+                        name="fb"
                         type="text"
                         className="form-input bg-gray-100 border-none w-full"
                         placeholder="ex: F-xxxxxx"
