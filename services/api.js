@@ -64,7 +64,7 @@ const api = createApi({
     }),
 
     getPayments: build.query({
-      query: (uid) => `/payments?user=${uid || ''}`,
+      query: (params) => `/payments?${params || ''}`,
       providesTags: ['payments'],
     }),
     createPayment: build.mutation({

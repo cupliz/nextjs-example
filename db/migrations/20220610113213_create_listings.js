@@ -3,11 +3,12 @@ exports.up = async function (knex) {
   const exist = await knex.schema.hasTable(tableName)
   if (!exist) {
     return knex.schema.createTable(tableName, function (table) {
-      table.string('name').primary().notNullable()
+      table.increments('id').primary().notNullable()
       table.string('user').notNullable()
+      table.string('name')
+      table.string('desc')
       table.string('background')
       table.string('title')
-      table.string('description')
       table.string('theme').notNullable().defaultTo('dark')
       table.text('links')
       table.string('image')

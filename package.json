@@ -2,7 +2,9 @@
   "name": "strbookingportal.com",
   "version": "0.1.0",
   "private": true,
-  "cacheDirectories": [".next/cache"],
+  "cacheDirectories": [
+    ".next/cache"
+  ],
   "engines": {
     "node": "17.x"
   },
@@ -23,6 +25,7 @@
     "@stripe/react-stripe-js": "^1.8.1",
     "@stripe/stripe-js": "^1.32.0",
     "autoprefixer": "^10.4.7",
+    "aws-sdk": "^2.1157.0",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
     "dayjs": "^1.11.3",
