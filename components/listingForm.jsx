@@ -5,16 +5,25 @@ import {
   HiOutlinePlusCircle,
   HiOutlineSave,
 } from "react-icons/hi";
+import { toast } from "react-toastify";
 import api from "../services/api";
-import { friendlyUrl } from "../utils/helper";
+import { cdn, handleError } from "../utils/helper";
 import { useAuth } from "../utils/useAuth";
 
 export default function ListingForm({ listings, show, onClose, editId }) {
   const { user } = useAuth();
   const [linksData, setLinksData] = useState([]);
+  const [file, setfile] = useState(null);
   const { data: logos } = api.useGetLogosQuery();
   const [editListing] = api.useEditListingsMutation();
   const [addListing] = api.useAddListingsMutation();
+  const [deleteMedia] = api.useDeleteMediaMutation();
+
+  const data = useMemo(
+    () => (editId !== null ? listings[editId] : {}),
+    [editId]
+  );
+
   const addLinks = () => {
     setLinksData([
       ...linksData,
@@ -26,7 +35,41 @@ export default function ListingForm({ listings, show, onClose, editId }) {
     newLinks.splice(index, 1);
     setLinksData(newLinks);
   };
-  const handleSubmit = (e, id) => {
+
+  const uploadPreview = (e) => {
+    setfile(e.target.files[0]);
+  };
+  const onUpload = async (file) => {
+    try {
+      const fileName = encodeURIComponent(file.name);
+      const fileType = encodeURIComponent(file.type);
+      const presigned = `/api/media?fileName=${fileName}&fileType=${fileType}`;
+      const res = await fetch(presigned, {
+        method: "POST",
+      });
+      const { url, fields } = await res.json();
+      const formData = new FormData();
+      Object.entries({ ...fields, file }).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      const upload = await fetch(url, {
+        method: "POST",
+        body: formData,
+      });
+      if (upload.ok) {
+        toast.success("Uploaded successfully!");
+        return fields.key;
+      } else {
+        toast.error("Upload failed.");
+        return false;
+      }
+    } catch (error) {
+      handleError(error);
+      return false;
+    }
+  };
+
+  const handleSubmit = async (e, id) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const rawData = Object.fromEntries(formData);
@@ -46,30 +89,40 @@ export default function ListingForm({ listings, show, onClose, editId }) {
       }
       return o;
     }, {});
-    const payload = {
-      ...formated,
-      links: formated.links ? JSON.stringify(formated.links) : "",
-    };
-    delete payload.file;
+    formated.links = formated.links ? JSON.stringify(formated.links) : "";
+    if (formated.background.name) {
+      const background = await onUpload(formated.background);
+      if (!!background) {
+        formated.background = background;
+        deleteMedia(data.background);
+      }
+    } else {
+      delete formated.background;
+    }
     if (editId !== null) {
-      editListing({ ...payload, id });
+      editListing({ ...formated, id });
     } else {
       payload.user = user.uid;
-      addListing(payload);
+      addListing(formated);
     }
+    e.target.reset();
     onClose();
   };
-  const data = useMemo(
-    () => (editId !== null ? listings[editId] : {}),
-    [editId]
-  );
+
   useEffect(() => {
     if (editId !== null && listings[editId]?.links) {
       setLinksData(JSON.parse(listings[editId]?.links));
     } else {
       setLinksData([]);
+      setfile(null);
     }
   }, [editId]);
+
+  const imageBackground = file
+    ? URL.createObjectURL(file)
+    : data?.background
+    ? cdn(data?.background)
+    : "";
 
   return (
     <Transition appear show={show} as={Fragment}>
@@ -249,19 +302,18 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                       Background URL
                     </label>
                     <input
-                      name="file"
-                      type="file"
-                      className="form-input bg-gray-100 border-none w-full"
-                      // defaultValue={data?.background}
-                    />
-                    {/* <textarea
+                      onChange={uploadPreview}
                       name="background"
-                      type="text"
-                      className="form-input bg-gray-100 border-none w-full mb-4"
-                      placeholder="Listing name"
-                      defaultValue={data?.background}
-                    /> */}
-                    <img className="mt-4" src={data?.background} alt="" />
+                      type="file"
+                      accept="image/png, image/jpeg"
+                      className="form-input bg-gray-100 border-none w-full"
+                    />
+                    <p className="text-xs text-gray-500 flex justify-end">
+                      Upload a .png or .jpg image (max 1MB).
+                    </p>
+                    {imageBackground && (
+                      <img className="mt-4" src={imageBackground} alt="" />
+                    )}
                   </div>
                 </div>
               </Dialog.Panel>

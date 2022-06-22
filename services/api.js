@@ -14,7 +14,7 @@ const api = createApi({
     }
   }),
   reducerPath: "api",
-  tagTypes: ['logos', 'listings', 'payments'],
+  tagTypes: ['logos', 'listings', 'payments', 'media'],
   endpoints: build => ({
     getLogos: build.query({
       query: () => `/logos`,
@@ -77,6 +77,21 @@ const api = createApi({
       },
       invalidatesTags: ['payments'],
     }),
+    // 
+    getMedia: build.query({
+      query: (params) => `/media?${params || ''}`,
+      providesTags: ['media'],
+    }),
+    deleteMedia: build.mutation({
+      query: (name) => {
+        return {
+          url: `/media?name=${name}`,
+          method: "DELETE",
+        }
+      },
+      invalidatesTags: ['media'],
+    }),
+
   })
 });
 

@@ -6,9 +6,10 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { toast } from "react-toastify";
 import api from "../services/api";
 import { useAuth } from "../utils/useAuth";
-import { toast } from "react-toastify";
+import { handleError } from "../utils/helper";
 
 export default function CardForm({ refetch }) {
   const { user } = useAuth();
@@ -50,7 +51,6 @@ export default function CardForm({ refetch }) {
             const { paymentIntent } = await stripe.confirmCardPayment(
               data.clientSecret
             );
-            console.log("succeed", paymentIntent);
             toast.success(`Subscribed! ${paymentIntent.id}`);
           } else {
             toast.success(`Subscribed!`);
@@ -62,8 +62,7 @@ export default function CardForm({ refetch }) {
       setvalid(false);
       card.clear();
     } catch (error) {
-      console.error(error.message);
-      toast.error(error.message);
+      handleError(error);
     }
   };
 
@@ -129,7 +128,6 @@ export default function CardForm({ refetch }) {
 //             payment_method: { card },
 //           }
 //         );
-//         console.log("succeed", paymentIntent);
 //         toast.success(`Payment Succeed ${paymentIntent.id}`);
 //       }
 //     } else {

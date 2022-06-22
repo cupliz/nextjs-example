@@ -1,4 +1,6 @@
 import connectionHandler from "../../db/knex";
+import { handleApiError } from '../../utils/helper'
+
 const handler = async (req, res) => {
   try {
     const table = "logos";
@@ -8,7 +10,7 @@ const handler = async (req, res) => {
     }
     return res.status(404).end();
   } catch (error) {
-    return res.status(500).json(error);
+    handleApiError(res, error)
   }
 };
 export default connectionHandler()(handler);

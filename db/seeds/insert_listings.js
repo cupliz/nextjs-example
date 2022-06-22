@@ -7,7 +7,7 @@ exports.seed = async function (knex) {
       name: 'Brianna Nolan Items',
       desc: 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.',
       user: 'uSbULOoVEBMCPDFkf3WverxxONP2',
-      background: 'https://a0.muscache.com/im/pictures/miso/Hosting-51228159/original/2d49f125-0e23-4e30-8792-3df2661c1cb5.jpeg',
+      background: 'background/fCGKW3qOPy3TLkgBojkyOWOso039.jpg',
       title: 'Choose your platform:',
       links: JSON.stringify([
         { logo: 'aribnb_square', url: 'https://www.airbnb.com/rooms/51228159' },

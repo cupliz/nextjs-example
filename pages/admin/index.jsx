@@ -10,7 +10,7 @@ import Layout from "../../components/layout";
 import Sidebar from "../../components/sidebar";
 import ListingForm from "../../components/listingForm";
 import api from "../../services/api";
-import { friendlyUrl } from "../../utils/helper";
+import { cdn, friendlyUrl, validUrl } from "../../utils/helper";
 import { useAuth } from "../../utils/useAuth";
 import { usePayment } from "../../utils/usePayment";
 
@@ -77,6 +77,7 @@ export default function Management() {
           </div>
           {listings?.length ? (
             listings.map((listing, i) => {
+              // console.log(listing?.background, validUrl(listing?.background))
               const linksData = listing?.links
                 ? JSON.parse(listing?.links)
                 : [];
@@ -125,7 +126,11 @@ export default function Management() {
                         return (
                           <div key={j} className="text-center">
                             <div className="w-20 h-20 flex items-center justify-center">
-                              <img className="w-full" src={logo?.url} alt="" />
+                              <img
+                                className="w-full"
+                                src={cdn(logo?.url)}
+                                alt=""
+                              />
                             </div>
                             <h1>{logo?.name}</h1>
                           </div>
@@ -135,7 +140,7 @@ export default function Management() {
                   </div>
                   <div>
                     <label htmlFor="background">Background:</label>
-                    <img src={listing?.background} alt="" />
+                    <img src={cdn(listing?.background)} alt="" />
                   </div>
                 </div>
               );

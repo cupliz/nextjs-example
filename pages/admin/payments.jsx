@@ -65,7 +65,6 @@ export default function Payments() {
             </thead>
             <tbody className="text-center">
               {subs?.map((x, i) => {
-                // console.log(x.current_period_start, x.current_period_end);
                 const { current_period_start, current_period_end, status } = x;
                 return (
                   <tr key={i}>

@@ -57,7 +57,7 @@ const handler = async (req, res) => {
     }
     res.status(404).end();
   } catch (error) {
-    res.status(500).json(error);
+    handleApiError(res, error)
   }
 };
 

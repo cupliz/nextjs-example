@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import api from "../services/api";
+import { cdn } from "../utils/helper";
 
 const fbTracking = (code) => {
   return code ? (
@@ -74,7 +75,7 @@ export default function Landing() {
       </Head>
       <section
         className="h-screen bg-no-repeat bg-cover flex items-center justify-center"
-        style={{ backgroundImage: `url("${data?.background}")` }}
+        style={{ backgroundImage: `url("${cdn(data?.background)}")` }}
       >
         <div className={`overlay-${data?.theme}`}></div>
         <div
@@ -98,7 +99,7 @@ export default function Landing() {
                   className="text-center bg-white px-4 py-2 rounded"
                 >
                   <div className="w-20 h-20 flex items-center justify-center">
-                    <img className="w-full" src={logo?.url} alt="" />
+                    <img className="w-full" src={cdn(logo?.url)} alt="" />
                   </div>
                   <h1>{logo?.name}</h1>
                 </a>

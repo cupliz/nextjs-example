@@ -4,7 +4,6 @@ const handler = async (req, res) => {
     const table = "listings";
     if (req.method === "GET") {
       if (Object.keys(req.query).length) {
-        console.log(req.query);
         const result = await req
           .db(table)
           .where(req.query)
@@ -32,7 +31,7 @@ const handler = async (req, res) => {
     }
     res.status(404).end();
   } catch (error) {
-    return res.status(500).json(error);
+    handleApiError(res, error)
   }
 };
 export default connectionHandler()(handler);
