@@ -5,10 +5,10 @@ import {
   HiOutlinePlusCircle,
   HiOutlineSave,
 } from "react-icons/hi";
-import { toast } from "react-toastify";
-import api from "../services/api";
-import { cdn, handleError } from "../utils/helper";
-import { useAuth } from "../utils/useAuth";
+import ReactSelect from "react-select";
+import api from "../../services/api";
+import { cdn, onUpload } from "../../utils/helper";
+import { useAuth } from "../../utils/useAuth";
 
 export default function ListingForm({ listings, show, onClose, editId }) {
   const { user } = useAuth();
@@ -38,35 +38,6 @@ export default function ListingForm({ listings, show, onClose, editId }) {
 
   const uploadPreview = (e) => {
     setfile(e.target.files[0]);
-  };
-  const onUpload = async (file) => {
-    try {
-      const fileName = encodeURIComponent(file.name);
-      const fileType = encodeURIComponent(file.type);
-      const presigned = `/api/media?fileName=${fileName}&fileType=${fileType}`;
-      const res = await fetch(presigned, {
-        method: "POST",
-      });
-      const { url, fields } = await res.json();
-      const formData = new FormData();
-      Object.entries({ ...fields, file }).forEach(([key, value]) => {
-        formData.append(key, value);
-      });
-      const upload = await fetch(url, {
-        method: "POST",
-        body: formData,
-      });
-      if (upload.ok) {
-        toast.success("Uploaded successfully!");
-        return fields.key;
-      } else {
-        toast.error("Upload failed.");
-        return false;
-      }
-    } catch (error) {
-      handleError(error);
-      return false;
-    }
   };
 
   const handleSubmit = async (e, id) => {
@@ -102,7 +73,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
     if (editId !== null) {
       editListing({ ...formated, id });
     } else {
-      payload.user = user.uid;
+      formated.user = user.uid;
       addListing(formated);
     }
     e.target.reset();
@@ -154,7 +125,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                 as="form"
                 encType="multipart/form-data"
                 onSubmit={(e) => handleSubmit(e, data?.id)}
-                className="w-full h-full overflow-hidden max-w-2xl rounded-2xl bg-white text-left align-middle shadow-xl transition-all pb-20"
+                className="w-full h-full bg-gray-100 overflow-hidden max-w-2xl rounded-2xl bg-white text-left align-middle shadow-xl transition-all pb-20"
               >
                 <Dialog.Title
                   as="div"
@@ -185,7 +156,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                     <input
                       name="name"
                       type="text"
-                      className="form-input bg-gray-100 border-none w-full"
+                      className="form-input border-none w-full"
                       placeholder="Listing name"
                       defaultValue={data?.name}
                     />
@@ -195,7 +166,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                     <textarea
                       name="desc"
                       type="text"
-                      className="form-input bg-gray-100 border-none w-full"
+                      className="form-input border-none w-full"
                       placeholder="Listing descriptions"
                       defaultValue={data?.desc}
                     />
@@ -205,7 +176,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                     <input
                       name="title"
                       type="text"
-                      className="form-input bg-gray-100 border-none w-full"
+                      className="form-input border-none w-full"
                       placeholder="Page heading"
                       defaultValue={data?.title}
                     />
@@ -217,7 +188,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                         name="theme"
                         id="theme"
                         defaultValue={data?.theme}
-                        className="form-select  bg-gray-100 w-full"
+                        className="form-select border-none w-full"
                       >
                         <option value="light">Light</option>
                         <option value="dark">Dark</option>
@@ -230,7 +201,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                       <input
                         name="ga"
                         type="text"
-                        className="form-input bg-gray-100 border-none w-full"
+                        className="form-input border-none w-full"
                         placeholder="ex: G-xxxxxx"
                         defaultValue={data?.ga}
                       />
@@ -240,7 +211,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                       <input
                         name="fb"
                         type="text"
-                        className="form-input bg-gray-100 border-none w-full"
+                        className="form-input border-none w-full"
                         placeholder="ex: F-xxxxxx"
                         defaultValue={data?.fb}
                       />
@@ -255,17 +226,48 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                       />
                     </label>
                     {linksData.map((link, j) => {
+                      const selectOptions = logos.map((x) => {
+                        return {
+                          value: x.key,
+                          label: x.name,
+                          image: cdn(x.url),
+                        };
+                      });
+                      const defaultValue = selectOptions.find(
+                        (option) => option.value === link.logo
+                      );
                       return (
                         <div key={j} className="mt-4 flex">
-                          <div className="w-full  space-y-2">
+                          <div className="w-full space-y-2">
                             <div className="flex">
                               <label htmlFor="logo" className="w-1/3">
                                 Logo
                               </label>
-                              <select
+
+                              <ReactSelect
+                                id="logo"
+                                name={`links.${j}.logo`}
+                                className="border-none w-full"
+                                value={defaultValue}
+                                options={selectOptions}
+                                formatOptionLabel={(logo, i) => (
+                                  <div
+                                    key={i}
+                                    className="flex items-center space-x-4"
+                                  >
+                                    <img
+                                      className="w-10"
+                                      src={logo.image}
+                                      alt={logo.key}
+                                    />
+                                    <span>{logo.label}</span>
+                                  </div>
+                                )}
+                              />
+                              {/* <select
                                 name={`links.${j}.logo`}
                                 id="logo"
-                                className="form-select bg-gray-100 border-none w-full"
+                                className="form-select border-none w-full"
                                 defaultValue={link.logo}
                               >
                                 {logos?.map((x, h) => (
@@ -273,7 +275,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                                     {x.name}
                                   </option>
                                 ))}
-                              </select>
+                              </select> */}
                             </div>
                             <div className="flex">
                               <label htmlFor="url" className="w-1/3">
@@ -284,7 +286,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                                 id="url"
                                 type="text"
                                 placeholder="Property URL"
-                                className="form-input bg-gray-100 border-none w-full"
+                                className="form-input border-none w-full"
                                 defaultValue={link.url}
                               />
                             </div>
@@ -306,7 +308,7 @@ export default function ListingForm({ listings, show, onClose, editId }) {
                       name="background"
                       type="file"
                       accept="image/png, image/jpeg"
-                      className="form-input bg-gray-100 border-none w-full"
+                      className="form-input border-none w-full"
                     />
                     <p className="text-xs text-gray-500 flex justify-end">
                       Upload a .png or .jpg image (max 1MB).

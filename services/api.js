@@ -18,6 +18,27 @@ const api = createApi({
   endpoints: build => ({
     getLogos: build.query({
       query: () => `/logos`,
+      providesTags: ['logos'],
+    }),
+    addLogos: build.mutation({
+      query: (body) => {
+        return {
+          url: `/logos`,
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body
+        }
+      },
+      invalidatesTags: ['logos'],
+    }),
+    deleteLogos: build.mutation({
+      query: (key) => ({
+        url: `/logos?key=${key}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ['logos'],
     }),
 
     getListings: build.query({

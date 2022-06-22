@@ -23,13 +23,14 @@ const handler = async (req, res) => {
       return res.json(Contents)
     }
     if (req.method === "POST") {
+      const prefix = req.query.type || 'background'
       const [extension] = req.query.fileName.match(
         /\.([0-9a-z]+)(?:[\?#]|$)/i
       )
       const post = s3.createPresignedPost({
         Bucket,
         Fields: {
-          key: `background/${nanoid(28) + extension}`,
+          key: `${prefix}/${nanoid(28) + extension}`,
           'Content-Type': req.query.fileType,
         },
         Expires: 60, // seconds

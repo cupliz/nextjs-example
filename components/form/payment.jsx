@@ -7,9 +7,9 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { toast } from "react-toastify";
-import api from "../services/api";
-import { useAuth } from "../utils/useAuth";
-import { handleError } from "../utils/helper";
+import api from "../../services/api";
+import { useAuth } from "../../utils/useAuth";
+import { handleError } from "../../utils/helper";
 
 export default function CardForm({ refetch }) {
   const { user } = useAuth();

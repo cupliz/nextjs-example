@@ -42,3 +42,34 @@ export const nanoid = (length) => {
 export const cdn = (file) => {
   return `${process.env.NEXT_PUBLIC_CDN_URL}/${file}`
 }
+
+export const onUpload = async (file, type = 'background') => {
+  try {
+    const fileName = encodeURIComponent(file.name);
+    const fileType = encodeURIComponent(file.type);
+    const presigned = `/api/media?fileName=${fileName}&fileType=${fileType}&type=${type}`;
+    const response = await fetch(presigned, {
+      method: "POST",
+    });
+    const { url, fields } = await response.json();
+    const formData = new FormData();
+    Object.entries({ ...fields, file }).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    const upload = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+    if (upload.ok) {
+      toast.success("Uploaded successfully!");
+      return fields.key;
+    } else {
+      toast.error("Upload failed.");
+      return false;
+    }
+    return fields.key
+  } catch (error) {
+    handleError(error);
+    return false;
+  }
+};

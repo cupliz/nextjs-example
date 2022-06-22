@@ -6,7 +6,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { HiBadgeCheck, HiBan, HiOutlineRefresh } from "react-icons/hi";
 import Layout from "../../components/layout";
 import Sidebar from "../../components/sidebar";
-import CardForm from "../../components/cardForm";
+import CardForm from "../../components/form/payment";
 import { useAuth } from "../../utils/useAuth";
 import { usePayment } from "../../utils/usePayment";
 

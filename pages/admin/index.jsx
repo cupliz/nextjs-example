@@ -8,7 +8,7 @@ import {
 import Link from "next/link";
 import Layout from "../../components/layout";
 import Sidebar from "../../components/sidebar";
-import ListingForm from "../../components/listingForm";
+import ListingForm from "../../components/form/listing";
 import api from "../../services/api";
 import { cdn, friendlyUrl, validUrl } from "../../utils/helper";
 import { useAuth } from "../../utils/useAuth";
