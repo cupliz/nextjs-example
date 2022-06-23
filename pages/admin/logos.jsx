@@ -7,7 +7,7 @@ import api from "../../services/api";
 import { HiOutlinePlus, HiTrash } from "react-icons/hi";
 import LogosForm from "../../components/form/logos";
 
-export default function account() {
+export default function Logos() {
   const { authCheck, user, auth } = useAuth();
   const [show, setShow] = useState(false);
   const { data: logos } = api.useGetLogosQuery();

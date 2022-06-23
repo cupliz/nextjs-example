@@ -93,9 +93,10 @@ export default function Landing() {
               const logo = logos?.find((x) => x.key === link.logo);
               return (
                 <a
+                  key={j}
                   href={link.url}
                   target="_blank"
-                  key={j}
+                  rel="noreferrer"
                   className="text-center bg-white px-4 py-2 rounded"
                 >
                   <div className="w-20 h-20 flex items-center justify-center">

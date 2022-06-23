@@ -1,4 +1,4 @@
-version: '3.1'
+version: "3.1"
 
 services:
   postgres:
@@ -9,5 +9,8 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB="strbooking"
+      - POSTGRES_USER="postgres"
+      - POSTGRES_PASSWORD="postgres"
     volumes:
       - ./.docker/postgres:/data/db:delegated

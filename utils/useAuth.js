@@ -1,4 +1,3 @@
-import { useCallback, useState } from "react";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { useRouter } from 'next/router'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'

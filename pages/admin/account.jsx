@@ -4,7 +4,7 @@ import Layout from "../../components/layout";
 import Sidebar from "../../components/sidebar";
 import { useAuth } from "../../utils/useAuth";
 
-export default function account() {
+export default function Account() {
   const { authCheck, user, auth } = useAuth();
   useEffect(() => {
     authCheck();

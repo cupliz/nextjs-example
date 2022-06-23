@@ -65,7 +65,7 @@ export default function Home() {
             There are many variations of passages of Lorem Ipsum:
             <ul className="list-disc pl-5">
               <li>
-                The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet
+                The first line of Lorem Ipsum, Lorem ipsum dolor sit amet
               </li>
               <li>The standard chunk of Lorem Ipsum used since the 1500s</li>
             </ul>
